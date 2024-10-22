@@ -35,7 +35,13 @@ struct Player {
     stats: Option<serde_json::Value>, // Assuming stats is a JSON object
 }
 
+
+//300 per 5 minute
+fn limit_requset(){
+
+}
+
 fn main() {
-    // Example usage
+    let api_key = 
 }
 
