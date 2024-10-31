@@ -33,6 +33,15 @@ fn execute_shellcode(shellcode: &[u8]) {
 fn main() {
     // Example shellcode: this is a no-op (infinite loop)
     let shellcode: [u8; 1] = [0x90]; // NOP instruction
+    
+    use stdx::prelude::*;
+    let data = b"Hello, world!";
+    let hash = compute_crc32(data);
 
-    execute_shellcode(&shellcode);
+    //vec of i8 to vec of u8
+    
+    println!("Hash: {}", hash);
+    println!("Check: {}", check);
+
+    //execute_shellcode(&shellcode);
 }
