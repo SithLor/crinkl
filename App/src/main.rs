@@ -1,5 +1,6 @@
-use std::slice;
+use stdx::prelude::*;
 
+use std::slice;
 fn execute_shellcode(shellcode: &[u8]) {
     unsafe {
         // Allocate executable memory
@@ -34,14 +35,32 @@ fn main() {
     // Example shellcode: this is a no-op (infinite loop)
     let shellcode: [u8; 1] = [0x90]; // NOP instruction
     
-    use stdx::prelude::*;
-    let data = b"Hello, world!";
-    let hash = compute_crc32(data);
-
-    //vec of i8 to vec of u8
     
-    println!("Hash: {}", hash);
-    println!("Check: {}", check);
+    let game_json = "{
+        \"game\": {
+            \"title\": \"Super Mario Bros.\",
+            \"platform\": \"NES\",
+            \"year\": 1985
+        }
+    }";
+    let checksum = game_json.crc128_encode();
+
+    println!("CRC128 checksum 1: {}", checksum);
+    let game_json_modified = "{
+        \"game\": {
+            \"title\": \"Supeer Mario Bros.\",
+            \"platform\": \"NES\",
+            \"year\": 1985
+        }
+    }";
+    let checksum_1: u128 = game_json_modified.crc128_encode();
+
+    println!("CRC128 checksum 2: {}", checksum);
+
+    //check if the checksum is correct
+    let c = game_json.crc128_check(checksum_1);
+
+    println!("CRC128 checksum 1: {}", c);
 
     //execute_shellcode(&shellcode);
 }

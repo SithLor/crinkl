@@ -307,6 +307,7 @@ pub trait CrcEncode {
     fn crc128_encode(&self) -> u128;
 }
 
+//str let encoded = "example".crc16_encode();
 impl CrcEncode for str {
     fn crc16_encode(&self) -> u16 {
         compute_crc16(self.as_bytes())
@@ -324,7 +325,7 @@ impl CrcEncode for str {
         compute_crc128(self.as_bytes())
     }
 }
-
+// Vec<u8> let encoded = vec![1, 2, 3, 4, 5].crc16_encode();
 impl CrcEncode for Vec<u8> {
     fn crc16_encode(&self) -> u16 {
         compute_crc16(self)
@@ -343,31 +344,6 @@ impl CrcEncode for Vec<u8> {
     }
 }
 
-macro_rules! impl_crc_encode_for_numeric {
-    ($($t:ty),*) => {
-        $(
-            impl CrcEncode for $t {
-                fn crc16_encode(&self) -> u16 {
-                    compute_crc16(&self.to_le_bytes())
-                }
-
-                fn crc32_encode(&self) -> u32 {
-                    compute_crc32(&self.to_le_bytes())
-                }
-
-                fn crc64_encode(&self) -> u64 {
-                    compute_crc64(&self.to_le_bytes())
-                }
-
-                fn crc128_encode(&self) -> u128 {
-                    compute_crc128(&self.to_le_bytes())
-                }
-            }
-        )*
-    };
-}
-
-impl_crc_encode_for_numeric!(i8, i16, i32, i64, u8, u16, u32, u64, f32, f64);
 
 pub trait CrcCheck {
     fn crc16_check(&self, checksum: u16) -> bool;
@@ -412,31 +388,6 @@ impl CrcCheck for Vec<u8> {
     }
 }
 
-macro_rules! impl_crc_check_for_numeric {
-    ($($t:ty),*) => {
-        $(
-            impl CrcCheck for $t {
-                fn crc16_check(&self, checksum: u16) -> bool {
-                    self.crc16_encode() == checksum
-                }
-
-                fn crc32_check(&self, checksum: u32) -> bool {
-                    self.crc32_encode() == checksum
-                }
-
-                fn crc64_check(&self, checksum: u64) -> bool {
-                    self.crc64_encode() == checksum
-                }
-
-                fn crc128_check(&self, checksum: u128) -> bool {
-                    self.crc128_encode() == checksum
-                }
-            }
-        )*
-    };
-}
-
-impl_crc_check_for_numeric!(i8, i16, i32, i64, u8, u16, u32, u64, f32, f64);
 
 // Usage examples:
 // let encoded = "t".crc16_encode();
