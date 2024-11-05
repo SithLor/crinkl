@@ -1,11 +1,6 @@
-pub use crate::crc::CRC128_TABLE;
-pub use crate::crc::CRC32_TABLE;
-pub use crate::crc::CRC64_TABLE;
-pub use crate::crc::CRC16_TABLE;
-pub use crate::crc::CrcCheck;
-pub use crate::crc::CrcEncode;
-pub use crate::crc::compute_crc128;
-pub use crate::crc::compute_crc16;
-pub use crate::crc::compute_crc32;
-pub use crate::crc::compute_crc64;
-
+#[cfg(feature = "crc")]
+pub use crate::crc::{
+    CRC128_TABLE, CRC32_TABLE, CRC64_TABLE, CRC16_TABLE,
+    CrcCheck, CrcEncode,
+    compute_crc128, compute_crc16, compute_crc32, compute_crc64
+};
