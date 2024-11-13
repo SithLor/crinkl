@@ -13,3 +13,22 @@ cargo add sprout_
 #@root ~/sprout start
 #@root ~/sprout add ./path_service 
 
+cargo install wiki-tui
+
+
+
+
+Project 
+    Server
+        Kill process:no
+        Start process:no
+        load rust lib from memory,
+
+        create loopback device for contantianer
+
+    take app eg 
+        clock-rs
+            src/main.rs
+                
+            cargo.toml
+        

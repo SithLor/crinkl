@@ -1,9 +1,7 @@
 [package]
-name = "stdx"
+name = "test_client"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-
-[features]
-crc = []
+libc = "0.2.162"
