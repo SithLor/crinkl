@@ -32,3 +32,5 @@ Project
                 
             cargo.toml
         
+
+cargo build -t aarch64-linux-android

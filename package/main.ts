@@ -5,6 +5,12 @@ worker.onmessage = function(event) {
     console.log('Main thread received:', result);
 };
 
+function add(i,e){
+    let fuckthis = i+e
+
+    return fuckthis
+}
+
 const data = 42;
 console.log('Main thread sending:', data);
 worker.postMessage(data);
