@@ -1,4 +1,5 @@
 pub mod highway_camera;
+
 #[cfg(test)]
 mod tests {
     use super::*;
