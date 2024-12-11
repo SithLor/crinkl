@@ -1,0 +1,27 @@
+{
+    "recommendations": [
+        "dtsvet.vscode-wasm",
+        "gplane.wasm-language-tools",
+        "jscearcy.rust-doc-viewer",
+        "rust-lang.rust-analyzer",
+        "ms-vscode.hexeditor",
+        "christian-kohler.path-intellisense",
+        "bierner.emojisense",
+        "aaron-bond.better-comments",
+        "denoland.vscode-deno",
+        "github.copilot",
+        "github.copilot-chat",
+        "venner.vscode-glua-enhanced",
+        "visualstudioexptteam.vscodeintellicode",
+        "visualstudioexptteam.intellicode-api-usage-examples",
+        "wix.vscode-import-cost",
+        "leizongmin.node-module-intellisense",
+        "christian-kohler.npm-intellisense",
+        "bierner.jsdoc-markdown-highlighting",
+        "tal7aouy.icons",
+        "tamasfe.even-better-toml",
+        "bierner.comment-tagged-templates",
+        "ms-vscode.vscode-typescript-next",
+        "geekidos.vdf"
+    ]
+}
