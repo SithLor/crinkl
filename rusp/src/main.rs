@@ -8,7 +8,11 @@ struct Item {
 fn fill_arr_random(arr: &mut Vec<f64>, length: f64) {
     //use rayon to fill array with random number
 }
-use std::sync::{Arc, Mutex};
+use std::{
+    fmt::Write as _,
+    io::Write,
+    sync::{Arc, Mutex},
+};
 
 use rand::prelude::*;
 use rayon::prelude::*;
@@ -17,16 +21,18 @@ fn main() {
     let price_per_item_max = 300_000_000;
     let price_per_item_min = 0;
 
-    let total_of_item_count = 100_000_000;
+    // let total_of_item_count = 100_000_000;
     let item_in_game = 400;
 
-    let item_count_per_item = (0..total_of_item_count)
-        .into_par_iter()
-        .map(|_| {
-            let mut rng = rand::rngs::StdRng::from_entropy();
-            rng.gen_range(0..total_of_item_count / item_in_game)
-        })
-        .collect::<Vec<i64>>();
+    // let item_count_per_item = (0..total_of_item_count)
+    //     .into_par_iter()
+    //     .map(|_| {
+    //         let mut rng = rand::rngs::StdRng::from_entropy();
+    //         rng.gen_range(0..total_of_item_count / item_in_game)
+    //     })
+    //     .collect::<Vec<i64>>();
+
+    let t = 5_000;
 
     let i: Arc<Mutex<usize>> = Arc::new(Mutex::new(0));
     let arr: Vec<Item> = (0..item_in_game as i64)
@@ -35,10 +41,10 @@ fn main() {
             let mut i: std::sync::MutexGuard<'_, usize> = i.lock().unwrap();
             let item: Item = Item {
                 name: rand::thread_rng().gen_range(0..150).to_string(),
-                price: (0..item_count_per_item[*i])
+                price: (0..t)
                     .map(|_| rand::thread_rng().gen_range(price_per_item_min..price_per_item_max))
                     .collect(),
-                sell: (0..item_count_per_item[*i])
+                sell: (0..t)
                     .map(|_| rand::thread_rng().gen_range(price_per_item_min..price_per_item_max))
                     .collect(),
             };
@@ -62,7 +68,7 @@ fn main() {
         }
     }
 
-    //cache result for 
+    //cache result for
     //eg file has
     //cache:
     //  struct Item {
@@ -72,14 +78,22 @@ fn main() {
     //  }
 
     {
+        use std::{
+            fmt::Write as _,
+            io::Write,
+            sync::{Arc, Mutex},
+        };
+
         //print all the struct to file
         let mut file = std::fs::File::create("cache").unwrap();
         for item in arr.iter() {
             //informat of struct {name: String, price: Vec<i64>, sell: Vec<i64>}
-            let _t = format!("{:?}",item.name);
-            let __t = format!("{:?}",item.price);
-            let ___t = format!("{:?}",item.sell);
-            
+            let _t = format!("{:?}", item.name);
+            let __t = format!("{:?}", item.price);
+            let ___t = format!("{:?}", item.sell);
+
+            let e = format!("{{name: {}, price: {}, sell: {}}}\n", _t, __t, ___t);
+            file.write_all(e.as_bytes()).unwrap();
         }
     }
 
