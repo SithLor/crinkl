@@ -48,12 +48,20 @@ const vec = new Vec<number>();
 vec.push(1);
 vec.push(2);
 vec.push(3);
+//add lot of data
+for (let i = 0; i < 10000; i++) {
+    vec.push(i);
+}
+
 
 console.log(vec.get(0)); // Output: 1
 console.log(vec.pop());  // Output: 3
 console.log(vec.len());  // Output: 2
 console.log(vec.isEmpty()); // Output: false
 
+//add each element in one variable
+let sum = 0;
 for (const element of vec.iter()) {
-    console.log(element); // Output: 1, 2
+    sum += element;
 }
+console.log(sum); // Output: 9999
