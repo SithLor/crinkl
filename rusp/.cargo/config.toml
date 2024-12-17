@@ -1,0 +1,13 @@
+[target.'cfg(target_arch = "x86_64")']
+rustflags = [
+
+
+    "-C",
+    "debuginfo=0",
+    "-C",
+    "strip=debuginfo",
+    "-C",
+    "target-cpu=native",
+    "-Z",
+    "tune-cpu=native",
+]

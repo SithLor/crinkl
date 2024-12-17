@@ -1,10 +1,7 @@
 #![feature(portable_simd)]
-use std::fs;
-use std::path::PathBuf;
-use std::io::{Read, Error};
-use libc::{sched_setaffinity, CPU_SET, CPU_ZERO, cpu_set_t};
-use std::mem;
-use std::ffi::CStr;
+//andriod 
+
+
 use rand::distributions::{Distribution, Uniform};
 use rand::Rng;
 use rand_core::SeedableRng;
@@ -218,6 +215,16 @@ fn welcome() {
 
 
 
+mod f{
+    
+    use std::fs;
+use std::path::PathBuf;
+use std::io::{Read, Error};
+use libc::{sched_setaffinity, CPU_SET, CPU_ZERO, cpu_set_t};
+use std::mem;
+use std::ffi::CStr;
+
+
 //Android shit
 const PATH_MAX: usize = 4096;
 const FREQ_MAX: usize = 256;
@@ -286,7 +293,7 @@ fn bigcore_set_affinity() -> Result<(), Error> {
     Ok(())
 }
 
-
+}
 
 
 
