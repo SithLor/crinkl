@@ -1,5 +1,10 @@
 #![feature(portable_simd)]
-
+use std::fs;
+use std::path::PathBuf;
+use std::io::{Read, Error};
+use libc::{sched_setaffinity, CPU_SET, CPU_ZERO, cpu_set_t};
+use std::mem;
+use std::ffi::CStr;
 use rand::distributions::{Distribution, Uniform};
 use rand::Rng;
 use rand_core::SeedableRng;
@@ -210,6 +215,81 @@ fn welcome() {
     // Print time and date
     println!("this what it does genrate (400*x*(0 to 300_000_000 random ))*8 bytes of data");
 }
+
+
+
+//Android shit
+const PATH_MAX: usize = 4096;
+const FREQ_MAX: usize = 256;
+
+fn bigcore_format_cpu_path(cpu_core: u32) -> PathBuf {
+    PathBuf::from(format!(
+        "/sys/devices/system/cpu/cpu{}/cpufreq/cpuinfo_max_freq",
+        cpu_core
+    ))
+}
+
+fn get_core_max_frequency(cpu_core: u32) -> Option<u64> {
+    let path = bigcore_format_cpu_path(cpu_core);
+
+    // Read CPU frequency from the path
+    if let Ok(mut file) = fs::File::open(&path) {
+        let mut buffer = String::new();
+        if let Ok(_) = file.read_to_string(&mut buffer) {
+            return buffer.trim().parse::<u64>().ok();
+        }
+    }
+    None
+}
+
+fn bigcore_set_affinity() -> Result<(), Error> {
+    let mut max_freq = 0u64;
+    let mut big_core_id = 0u32;
+    let mut corecnt = 0u32;
+
+    // Iterate through CPU cores to find the one with the highest frequency
+    loop {
+        if let Some(core_freq) = get_core_max_frequency(corecnt) {
+            if core_freq >= max_freq {
+                max_freq = core_freq;
+                big_core_id = corecnt;
+            }
+        } else {
+            break; // Stop when no more CPU cores are found
+        }
+        corecnt += 1;
+    }
+
+    println!(
+        "bigcore: big CPU number is {}, frequency {} Hz",
+        big_core_id, max_freq
+    );
+
+    // Set affinity to the identified big core
+    let mut cpuset: cpu_set_t = unsafe { mem::zeroed() };
+    unsafe {
+        CPU_ZERO(&mut cpuset);
+        CPU_SET(big_core_id as usize, &mut cpuset);
+    }
+
+    let result = unsafe { sched_setaffinity(0, mem::size_of::<cpu_set_t>(), &cpuset) };
+
+    if result != 0 {
+        let err_msg = unsafe { CStr::from_ptr(libc::strerror(result)) }
+            .to_string_lossy()
+            .into_owned();
+        eprintln!("bigcore: setting affinity failed: {}", err_msg);
+    } else {
+        println!("bigcore: forced current thread onto big core");
+    }
+
+    Ok(())
+}
+
+
+
+
+
 fn main() {
     welcome();
 
